@@ -27,12 +27,12 @@ services:
       - db
 
   nginx:
-    build: ./web-client
+    build: ./nginx
     ports:
       - "80:80"
     volumes:
-      - ./web-client/index.html:/usr/share/nginx/html/index.html:ro
-      - ./web-client/nginx.conf:/etc/nginx/templates/default.conf.template:ro
+      - ./nginx/index.html:/usr/share/nginx/html/index.html:ro
+      - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template:ro
     environment:
       BACKEND_URL: ${BACKEND_URL}
 volumes:
