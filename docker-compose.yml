@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: url-shortener
+    environment:
+      APP_PORT: ${APP_PORT}
+      SERVER_URL: ${SERVER_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      ENABLE_HTTPS: ${ENABLE_HTTPS}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  nginx:
+    build: ./web-client
+    ports:
+      - "80:80"
+    volumes:
+      - ./web-client/index.html:/usr/share/nginx/html/index.html:ro
+      - ./web-client/nginx.conf:/etc/nginx/templates/default.conf.template:ro
+    environment:
+      BACKEND_URL: ${BACKEND_URL}
+volumes:
+  postgres_data:
