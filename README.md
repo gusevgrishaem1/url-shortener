@@ -21,7 +21,7 @@
 
 ## Интерфейс
 
-![screenshot](image.png)
+![screenshot](img.png)
 
 ## Лицензия
 
