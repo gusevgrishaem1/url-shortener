@@ -13,9 +13,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  app:
-    build: .
-    container_name: url-shortener
+  backend:
+    image: grishaem1/shortenerurl-backend:latest
+    container_name: url-shortener-backend
     environment:
       APP_PORT: ${APP_PORT}
       SERVER_URL: ${SERVER_URL}
@@ -26,8 +26,9 @@ services:
     depends_on:
       - db
 
-  nginx:
-    build: ./nginx
+  frontend:
+    image: grishaem1/shortenerurl-frontend:latest
+    container_name: url-shortener-frontend
     ports:
       - "80:80"
     volumes:
@@ -35,5 +36,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template:ro
     environment:
       BACKEND_URL: ${BACKEND_URL}
+    depends_on:
+      - backend
 volumes:
   postgres_data:

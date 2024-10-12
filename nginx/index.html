@@ -1,102 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Сокращатель ссылок</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: #fff;
+            background-color: #f0f0f5;
+            color: #333;
         }
 
         .container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
         }
 
         h1 {
-            margin-bottom: 1rem;
-            font-size: 2rem;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #007BFF;
         }
 
-        form {
+        .input-group {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
         input[type="url"] {
-            padding: 0.5rem;
-            border: none;
-            border-radius: 5px;
-            margin-bottom: 1rem;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
         }
 
-        input[type="submit"] {
-            padding: 0.5rem;
+        input[type="url"]:focus {
+            border-color: #007BFF;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            color: white;
+            font-weight: 600;
             border: none;
-            border-radius: 5px;
-            background-color: #5c67f2;
-            color: #fff;
-            font-size: 1rem;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
 
-        input[type="submit"]:hover {
-            background-color: #4b55d1;
+        button:hover {
+            background-color: #0056b3;
         }
 
         .result {
-            margin-top: 1rem;
-            background: #5c67f2;
-            padding: 0.5rem;
-            border-radius: 5px;
             display: none;
-        }
-
-        .result button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            padding: 0;
+            margin-top: 20px;
         }
 
         .error {
-            margin-top: 1rem;
-            background: #e74c3c;
-            padding: 0.5rem;
-            border-radius: 5px;
+            color: red;
             display: none;
+            margin-top: 20px;
+        }
+
+        .shortened-url {
+            background-color: #f0f0f5;
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            color: #007BFF;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #0056b3;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1>URL Shortener</h1>
-    <form id="urlForm">
-        <input type="url" id="longUrl" placeholder="Enter your URL" required>
-        <input type="submit" value="Shorten">
-    </form>
-    <div id="result" class="result">
-        Shortened URL: <button id="shortUrl" onclick="copyToClipboard()"></button>
+    <h1>Сократи свою ссылку</h1>
+    <div class="input-group" id="urlForm">
+        <input type="url" id="longUrl" placeholder="Вставьте ссылку сюда" required>
+        <button id="submit-button">Сократить</button>
     </div>
-    <div id="error" class="error"></div>
+
+    <div class="result" id="result">
+        <p>Сокращённая ссылка:</p>
+        <p class="shortened-url" id="shortUrl"></p>
+        <p class="copy-notice" id="copyNotice" style="display: none; color: green;">Скопировано в буфер обмена!</p>
+    </div>
+
+    <div class="error" id="error"></div>
+
+    <footer>
+        <p>© 2024 Сокращатель ссылок | <a href="https://github.com/gusevgrishaem1">Мой GitHub</a></p>
+    </footer>
 </div>
+
 <script>
     const backendUrl = "{{ backend_url }}";
-    document.getElementById('urlForm').addEventListener('submit', async function (event) {
+
+    document.getElementById('submit-button').addEventListener('click', async function (event) {
         event.preventDefault();
         const longUrl = document.getElementById('longUrl').value;
         try {
@@ -105,13 +151,18 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({original: longUrl})
+                body: JSON.stringify({ original: longUrl })
             });
+
             if (!response.ok) {
-                throw new Error('Failed to shorten URL');
+                throw new Error('Не удалось сократить ссылку');
             }
+
             const result = await response.json();
-            document.getElementById('shortUrl').textContent = result.short;
+            const shortUrlElement = document.getElementById('shortUrl');
+            shortUrlElement.textContent = result.short;
+            shortUrlElement.style.display = 'block';
+
             document.getElementById('result').style.display = 'block';
             document.getElementById('error').style.display = 'none';
         } catch (error) {
@@ -120,14 +171,21 @@
             document.getElementById('result').style.display = 'none';
         }
     });
-    function copyToClipboard() {
+
+    document.getElementById('shortUrl').addEventListener('click', function () {
         const shortUrl = document.getElementById('shortUrl').textContent;
-        navigator.clipboard.writeText(shortUrl).then(() => {
-            alert('Short URL copied to clipboard!');
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
+
+        navigator.clipboard.writeText(shortUrl).then(function () {
+            document.getElementById('copyNotice').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('copyNotice').style.display = 'none';
+            }, 2000);
+        }).catch(function (error) {
+            console.error('Ошибка копирования: ', error);
         });
-    }
+    });
 </script>
+
 </body>
 </html>
