@@ -18,7 +18,8 @@
 
 ## Интерфейс
 
-![screenshot](img.png)
+![image](https://github.com/user-attachments/assets/5b9418be-ae1f-455d-8f26-f68cbfdc15e0)
+
 
 ## Начало работы
 
