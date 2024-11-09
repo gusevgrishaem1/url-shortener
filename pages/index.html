@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Сокращатель ссылок</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -21,6 +21,7 @@
             height: 100vh;
             background-color: #f0f0f5;
             color: #333;
+            padding: 20px;
         }
 
         .container {
@@ -31,6 +32,7 @@
             box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             width: 100%;
+            position: relative;
         }
 
         h1 {
@@ -42,6 +44,7 @@
 
         .input-group {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             margin-bottom: 30px;
@@ -63,7 +66,7 @@
 
         button {
             padding: 12px 25px;
-            margin-left: 10px;
+            margin-top: 10px;
             background-color: #007BFF;
             color: white;
             font-weight: 600;
@@ -72,15 +75,41 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
+            width: 100%;
         }
 
         button:hover {
             background-color: #0056b3;
         }
 
+        .loading {
+            display: none;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #007BFF;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .result {
             display: none;
             margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .result.show {
+            display: block;
+            opacity: 1;
         }
 
         .error {
@@ -115,6 +144,26 @@
         a:hover {
             color: #0056b3;
         }
+
+        /* Медиазапрос для экранов до 600px */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            input[type="url"], button {
+                width: 100%;
+            }
+
+            button {
+                margin-top: 10px;
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -124,6 +173,7 @@
     <div class="input-group" id="urlForm">
         <input type="url" id="longUrl" placeholder="Вставьте ссылку сюда" required>
         <button id="submit-button">Сократить</button>
+        <div class="loading" id="loading"></div> <!-- Спиннер -->
     </div>
 
     <div class="result" id="result">
@@ -139,53 +189,9 @@
     </footer>
 </div>
 
-<script>
-    const backendUrl = "{{ backend_url }}";
+<!-- Подключаем внешний скрипт -->
+<script src="script.js"></script>
 
-    document.getElementById('submit-button').addEventListener('click', async function (event) {
-        event.preventDefault();
-        const longUrl = document.getElementById('longUrl').value;
-        try {
-            const response = await fetch(`${backendUrl}/shorten`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ original: longUrl })
-            });
-
-            if (!response.ok) {
-                throw new Error('Не удалось сократить ссылку');
-            }
-
-            const result = await response.json();
-            const shortUrlElement = document.getElementById('shortUrl');
-            shortUrlElement.textContent = result.short;
-            shortUrlElement.style.display = 'block';
-
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('error').style.display = 'none';
-        } catch (error) {
-            document.getElementById('error').textContent = error.message;
-            document.getElementById('error').style.display = 'block';
-            document.getElementById('result').style.display = 'none';
-        }
-    });
-
-    document.getElementById('shortUrl').addEventListener('click', function () {
-        const shortUrl = document.getElementById('shortUrl').textContent;
-
-        navigator.clipboard.writeText(shortUrl).then(function () {
-            document.getElementById('copyNotice').style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('copyNotice').style.display = 'none';
-            }, 2000);
-        }).catch(function (error) {
-            console.error('Ошибка копирования: ', error);
-        });
-    });
-</script>
 
 </body>
 </html>
