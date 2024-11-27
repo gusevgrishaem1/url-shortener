@@ -1,0 +1,26 @@
+name: Deploy Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up environment variables
+        run: |
+          echo "APP_PORT=${{ secrets.APP_PORT }}" >> $GITHUB_ENV
+          echo "SERVER_URL=${{ secrets.SERVER_URL }}" >> $GITHUB_ENV
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "ENABLE_HTTPS=${{ secrets.ENABLE_HTTPS }}" >> $GITHUB_ENV
+
+      - name: Deploy to server
+        run: |
+          # Ваши команды для деплоя приложения, например:
+          ./deploy.sh
