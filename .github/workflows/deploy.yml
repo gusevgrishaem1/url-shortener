@@ -19,8 +19,3 @@ jobs:
           echo "SERVER_URL=${{ secrets.SERVER_URL }}" >> $GITHUB_ENV
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
           echo "ENABLE_HTTPS=${{ secrets.ENABLE_HTTPS }}" >> $GITHUB_ENV
-
-      - name: Deploy to server
-        run: |
-          # Ваши команды для деплоя приложения, например:
-          ./deploy.sh
