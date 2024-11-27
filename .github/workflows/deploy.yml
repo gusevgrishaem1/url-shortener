@@ -19,6 +19,9 @@ jobs:
           echo "SERVER_URL=${{ secrets.SERVER_URL }}" >> $GITHUB_ENV
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
           echo "ENABLE_HTTPS=${{ secrets.ENABLE_HTTPS }}" >> $GITHUB_ENV
+      - name: Give execute permission to deploy script
+        run: chmod +x ./deploy.sh
+
       - name: Deploy to server
         run: |
           ./deploy.sh
