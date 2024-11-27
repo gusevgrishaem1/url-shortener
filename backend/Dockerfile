@@ -8,14 +8,14 @@ RUN apk add --no-cache git
 WORKDIR /app
 
 # Копируем go.mod и go.sum и устанавливаем зависимости
-COPY go.mod go.sum ./
+COPY ../go.mod go.sum ./
 RUN go mod download
 
 # Копируем исходный код
-COPY . .
+COPY .. .
 
 # Сборка приложения
-RUN go build -o url-shortener ./backend/cmd/shortener/main.go
+RUN go build -o url-shortener ./cmd/shortener/main.go
 
 # Определяем порт, который будет открыт
 EXPOSE 8080
