@@ -3,13 +3,14 @@ package server
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/config"
-	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/model"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/gusevgrishaem1/url-shortener/internal/shortener/config"
+	"github.com/gusevgrishaem1/url-shortener/internal/shortener/model"
 )
 
 // MockStorage is a mock implementation of the Storage interface.

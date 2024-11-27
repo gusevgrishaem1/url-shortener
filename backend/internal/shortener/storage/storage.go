@@ -4,12 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/model"
 	"log"
 	"os"
 	"time"
 
 	_ "github.com/lib/pq"
+
+	"github.com/gusevgrishaem1/url-shortener/internal/shortener/model"
 )
 
 // PostgresStorage реализация интерфейса Storage для PostgreSQL.

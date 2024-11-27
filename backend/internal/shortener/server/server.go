@@ -3,9 +3,6 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/config"
-	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/model"
-	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/storage"
 	"log"
 	"net/http"
 	"time"
@@ -14,6 +11,10 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 	"github.com/teris-io/shortid"
+
+	"github.com/gusevgrishaem1/url-shortener/internal/shortener/config"
+	"github.com/gusevgrishaem1/url-shortener/internal/shortener/model"
+	"github.com/gusevgrishaem1/url-shortener/internal/shortener/storage"
 )
 
 // Storage интерфейс для работы с хранилищем URL.
