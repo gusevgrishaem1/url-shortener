@@ -21,7 +21,6 @@ jobs:
           echo "ENABLE_HTTPS=${{ secrets.ENABLE_HTTPS }}" >> $GITHUB_ENV
       - name: Give execute permission to deploy script
         run: chmod +x ./deploy.sh
-
       - name: Deploy to server
         run: |
           ./deploy.sh
