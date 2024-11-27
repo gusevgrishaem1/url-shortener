@@ -1,4 +1,4 @@
-const backendUrl = "http://url-shortener-production-8874.up.railway.app";
+const backendUrl = "https://url-shortener-production-8874.up.railway.app";
 
 document.getElementById('submit-button').addEventListener('click', async function (event) {
     event.preventDefault();
