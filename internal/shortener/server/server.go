@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 	"github.com/teris-io/shortid"
 
@@ -31,10 +30,6 @@ type Handler struct {
 
 // StartServer запускает HTTP сервер.
 func StartServer(_ context.Context) error {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	cfg := config.NewConfig()
 
 	r := mux.NewRouter()
