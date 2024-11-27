@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:14
+    image: postgres:15
     container_name: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -14,8 +14,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    image: grishaem1/shortenerurl-backend:latest
-    container_name: url-shortener-backend
+    image: grishaem1/urlshortener:latest
+    container_name: url-shortener
     environment:
       APP_PORT: ${APP_PORT}
       SERVER_URL: ${SERVER_URL}
@@ -25,18 +25,5 @@ services:
       - "8080:8080"
     depends_on:
       - db
-
-  frontend:
-    image: grishaem1/shortenerurl-frontend:latest
-    container_name: url-shortener-frontend
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/index.html:/usr/share/nginx/html/index.html:ro
-      - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template:ro
-    environment:
-      BACKEND_URL: ${BACKEND_URL}
-    depends_on:
-      - backend
 volumes:
   postgres_data:

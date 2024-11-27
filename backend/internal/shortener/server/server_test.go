@@ -3,12 +3,12 @@ package server
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/config"
+	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/model"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gusevgrishaem1/url-shortener/internal/config"
-	"github.com/gusevgrishaem1/url-shortener/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

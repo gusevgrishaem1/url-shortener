@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	server "github.com/gusevgrishaem1/url-shortener/internal/sever"
+	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/server"
 )
 
 func main() {

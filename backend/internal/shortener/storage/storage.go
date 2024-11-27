@@ -1,10 +1,12 @@
 package storage
 
 import (
+	"context"
 	"database/sql"
 	"errors"
-	"github.com/gusevgrishaem1/url-shortener/internal/model"
+	"github.com/gusevgrishaem1/url-shortener/backend/internal/shortener/model"
 	"log"
+	"os"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -23,6 +25,18 @@ func NewPostgresStorage(connStr string, maxOpenConns, maxIdleConns int, connMaxL
 	}
 
 	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+
+	sqlFile := "./db_scripts/001_create_tables.sql"
+	script, err := os.ReadFile(sqlFile)
+	if err != nil {
+		return nil, err
+	}
+
+	// Выполнение SQL-скрипта
+	_, err = db.ExecContext(context.TODO(), string(script))
+	if err != nil {
 		return nil, err
 	}
 

@@ -4,14 +4,6 @@
 
 Это расширение позволяет сокращать длинные URL.
 
-## Установка
-
-1. Скачайте [ZIP-архив](https://github.com/gusevgrishaem1/url-shortener/archive/refs/heads/main.zip).
-2. Распакуйте архив.
-3. Откройте Chrome и перейдите на `chrome://extensions/`.
-4. Включите режим разработчика (Developer mode).
-5. Нажмите на "Загрузить распакованное расширение" (Load unpacked) и выберите папку с вашим расширением.
-
 ## Использование
 
 Просто вставьте длинный URL и нажмите кнопку "Сократить".
@@ -19,7 +11,6 @@
 ## Интерфейс
 
 ![image](https://github.com/user-attachments/assets/5b9418be-ae1f-455d-8f26-f68cbfdc15e0)
-
 
 ## Начало работы
 

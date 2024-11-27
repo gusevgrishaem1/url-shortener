@@ -1,4 +1,4 @@
-const backendUrl = "http://176.114.71.224:8080";
+const backendUrl = "http://localhost:8080";
 
 document.getElementById('submit-button').addEventListener('click', async function (event) {
     event.preventDefault();

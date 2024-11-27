@@ -15,7 +15,7 @@ RUN go mod download
 COPY . .
 
 # Сборка приложения
-RUN go build -o url-shortener ./cmd/main.go
+RUN go build -o url-shortener ./backend/cmd/shortener/main.go
 
 # Определяем порт, который будет открыт
 EXPOSE 8080

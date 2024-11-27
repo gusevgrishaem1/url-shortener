@@ -5,4 +5,3 @@ CREATE TABLE if not exists urls
     short_url    TEXT NOT NULL UNIQUE,
     create_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
