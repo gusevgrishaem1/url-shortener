@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -16,6 +17,9 @@ type Config struct {
 
 // NewConfig инициализирует конфигурацию из переменных среды.
 func NewConfig() *Config {
+	for _, env := range os.Environ() {
+		fmt.Println(env)
+	}
 	port := os.Getenv("APP_PORT")
 	if port == "" {
 		port = "8080" // Значение по умолчанию
