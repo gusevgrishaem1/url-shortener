@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -73,4 +74,22 @@ func (s *PostgresStorage) Get(short string) (string, bool) {
 	}
 
 	return original, true
+}
+
+// DeleteByTimestamp удалить старые записи по createTs
+func (s *PostgresStorage) DeleteByTimestamp(createTs time.Time) error {
+	query := `DELETE FROM urls WHERE create_ts < $1`
+	res, err := s.db.Exec(query, createTs)
+	if err != nil {
+		return fmt.Errorf("[DeleteByTimestamp] error deleting old URLs: %v", err)
+	}
+
+	cnt, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("[DeleteByTimestamp] error getting rows affected: %v", err)
+	}
+
+	log.Println("[DeleteByTimestamp] deleted rows: ", cnt)
+
+	return nil
 }

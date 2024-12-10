@@ -45,6 +45,16 @@ func StartServer(_ context.Context) error {
 	}
 	h := Handler{postgresStorage, cfg}
 
+	go func() {
+		timer := time.NewTimer(60 * time.Second)
+		for range timer.C {
+			err := postgresStorage.DeleteByTimestamp(time.Now().Add(time.Hour * -48))
+			if err != nil {
+				log.Println(err.Error())
+			}
+		}
+	}()
+
 	// Используем middleware для логирования запросов.
 	r.Use(loggingMiddleware)
 
