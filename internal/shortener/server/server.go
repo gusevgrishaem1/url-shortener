@@ -46,14 +46,7 @@ func StartServer(_ context.Context) error {
 	h := Handler{postgresStorage, cfg}
 
 	go func() {
-		ticker := time.NewTicker(12 * time.Hour)
-		defer ticker.Stop()
-		for range ticker.C {
-			err := postgresStorage.DeleteByTimestamp(time.Now().Add(time.Hour * -48))
-			if err != nil {
-				log.Println(err.Error())
-			}
-		}
+		startStorageClean(postgresStorage)
 	}()
 
 	// Используем middleware для логирования запросов.
@@ -78,6 +71,17 @@ func StartServer(_ context.Context) error {
 	} else {
 		log.Printf("Starting HTTP server on %s\n", addr)
 		return http.ListenAndServe(addr, handler)
+	}
+}
+
+func startStorageClean(postgresStorage *storage.PostgresStorage) {
+	ticker := time.NewTicker(12 * time.Hour)
+	defer ticker.Stop()
+	for range ticker.C {
+		err := postgresStorage.DeleteByTimestamp(time.Now().Add(time.Hour * -48))
+		if err != nil {
+			log.Println(err.Error())
+		}
 	}
 }
 
