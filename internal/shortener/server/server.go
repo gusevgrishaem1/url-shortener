@@ -45,9 +45,7 @@ func StartServer(_ context.Context) error {
 	}
 	h := Handler{postgresStorage, cfg}
 
-	go func() {
-		startStorageClean(postgresStorage)
-	}()
+	go startStorageClean(postgresStorage)
 
 	// Используем middleware для логирования запросов.
 	r.Use(loggingMiddleware)
